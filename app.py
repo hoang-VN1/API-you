@@ -116,4 +116,86 @@ def not_found(e):
 # === CHẠY SERVER ===
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port, debug=False)        print(f"[ERROR] Không lấy được server: {e}")
+        return []
+
+# === DANH SÁCH BOSS HỖ TRỢ ===
+BOSS_LIST = [
+    'full_moon', 'dough_king', 'rip_indra', 'darkbeard',
+    'soul_reaper', 'cursed_captain', 'mirage', 'kitsune',
+    'leviathan', 'frozen_dimension', 'prehistoric',
+    'sword_dealer', 'haki_dealer', 'pirate_raid',
+    'cake_prince', 'cake_queen', 'tyrant', 'elite',
+    'fruit', 'berry', 'cake_spawner'
+]
+
+# === ROUTE CHÍNH ===
+@app.route('/')
+def home():
+    return jsonify({
+        "status": "online",
+        "service": "Blox Hop API",
+        "endpoints": "/boss/<name>?api_key=YOUR_KEY",
+        "note": "Chỉ trả về server còn chỗ trống"
+    })
+
+# === ROUTE ĐỘNG CHO TẤT CẢ BOSS ===
+@app.route('/boss/<boss_name>')
+@require_api_key
+def get_boss_servers(boss_name):
+    if boss_name not in BOSS_LIST:
+        return jsonify({"error": f"Boss '{boss_name}' không tồn tại"}), 404
+    servers = fetch_servers()
+    return jsonify({
+        "success": True,
+        "boss": boss_name,
+        "total": len(servers),
+        "data": servers
+    })
+
+# === XỬ LÝ LỖI ===
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({"error": "Endpoint not found"}), 404
+
+# === CHẠY SERVER ===
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port, debug=False)    'soul_reaper', 'cursed_captain', 'mirage', 'kitsune',
+    'leviathan', 'frozen_dimension', 'prehistoric',
+    'sword_dealer', 'haki_dealer', 'pirate_raid',
+    'cake_prince', 'cake_queen', 'tyrant', 'elite',
+    'fruit', 'berry', 'cake_spawner'
+]
+
+# === ROUTE CHÍNH ===
+@app.route('/')
+def home():
+    return jsonify({
+        "status": "online",
+        "service": "Blox Hop API",
+        "endpoints": "/boss/<name>?api_key=YOUR_KEY"
+    })
+
+# === ROUTE ĐỘNG CHO TẤT CẢ BOSS ===
+@app.route('/boss/<boss_name>')
+@require_api_key
+def get_boss_servers(boss_name):
+    if boss_name not in BOSS_LIST:
+        return jsonify({"error": f"Boss '{boss_name}' không tồn tại"}), 404
+    servers = fetch_servers()
+    return jsonify({
+        "success": True,
+        "boss": boss_name,
+        "data": servers
+    })
+
+# === XỬ LÝ LỖI ===
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({"error": "Endpoint not found"}), 404
+
+# === CHẠY SERVER ===
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 10000))
     app.run(host='0.0.0.0', port=port, debug=False)
